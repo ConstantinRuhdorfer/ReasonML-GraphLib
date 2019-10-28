@@ -1,10 +1,18 @@
-open DirectedGraph
 open Edge
 open Vertex
+open Print
+open Graph
 
-// type input_vertecies = vertecies;
-
-let file_in_channel = Pervasives.open_in("input/digraph8.plain");
+/**
+ * Reads in a file with the format:
+ * 
+ * <Number of vertecies>
+ * <edge e1 vertex a> <edge e1 vertexb>
+ * … 
+ * 
+ * And performs calculations on the resulting graph.
+ */
+let file_in_channel = open_in("input/graph8.plain");
 
 let file_stream =
   Stream.from(_i =>
@@ -41,7 +49,13 @@ let input_vertecies: list(int) = parse_input_vertecies(num_vertecies, [])
 
 let input_edges = parse_input_edges(inS, [])
 
-let directedGraph = DirectedGraph(input_vertecies, input_edges);
+let aGraph = Graph(input_vertecies, input_edges);
+let connected = Graph.getConnectedComponents(aGraph)
+
+print_newline()
+print_string("Result.")
+
+print_list(connected, print_vertecies)
 
 print_newline()
 print_string("Finished.")

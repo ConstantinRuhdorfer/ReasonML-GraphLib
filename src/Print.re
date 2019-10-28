@@ -1,30 +1,12 @@
 open Edge
 
-let rec print_list_int = list => {
-  switch list {
-  | [] => print_string("Finished")
-  | [head, ...tail] => {
-    print_int(head);
-    print_list_int(tail);
-  }
-  };
-}
-
-let rec print_list_str = list => {
-  switch list {
-  | [] => print_newline()
-  | [head, ...tail] => {
-    print_string(head);
-    print_list_str(tail);
-  }
-  };
-}
-
 let rec print_list = (list, func) => {
   switch list {
   | [] => print_newline()
   | [head, ...tail] => {
+    print_string("[")
     func(head);
+    print_string("]")
     print_list(tail, func);
   }
   };
@@ -39,4 +21,30 @@ let print_edge = edge => {
       print_newline()
       };
   } 
+}
+
+let rec print_vertecies = vertecies => {
+  switch vertecies {
+    | [] => print_string("") 
+    | [head, ...tail] => {
+      print_int(head)
+      print_vertecies(tail)
+    }
+  }
+}
+
+let print_list_list = (list_of_lists) => {
+  print_list(list_of_lists, print_list)
+}
+
+let print_list_int = list => {
+  print_list(list, print_int)
+}
+
+let print_list_str = list => {
+  print_list(list, print_string)
+}
+
+let print_list_edge = list => {
+  print_list(list, print_edge)
 }

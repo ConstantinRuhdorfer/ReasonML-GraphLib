@@ -5,7 +5,7 @@ This is a reimplimentation of https://github.com/ConstantinRuhdorfer/GraphLib.
 Why?
 
 Because the original version was too slow and I was challanged to make a functional version.
-The python version is more easier understandable.
+The python version is more easier to understand.
 This is mostly an experiment.
 
 ## Build

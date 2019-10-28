@@ -13,6 +13,8 @@ module type DirectedGraph = {
   let removeVertex: (vertex, directedGraph) => directedGraph;
   let addEdge: (edge, directedGraph) => directedGraph;
   let removeEdge: (edge, directedGraph) => directedGraph;
+  let getNeighbors: (vertex, directedGraph) => vertecies;
+  let getReachableNeighbors: (vertex, directedGraph) => vertecies;
 };
 
 module DirectedGraph: DirectedGraph = {
@@ -59,4 +61,36 @@ module DirectedGraph: DirectedGraph = {
       )
     };
   };
+  let getNeighbors = (from, directedGraph) => {
+    switch (directedGraph) {
+    | Empty => []
+    | DirectedGraph(_, edges) =>
+      List.fold_left(
+        (list, edge) =>
+          if (edge.vertecie_a == from) {
+            [edge.vertecie_b, ...list];
+          } else if (edge.vertecie_b == from) {
+            [edge.vertecie_a, ...list];
+          } else {
+            list;
+          },
+        [],
+        edges,
+      )
+    };}
+  let getReachableNeighbors = (from, directedGraph) => {
+    switch (directedGraph) {
+    | Empty => []
+    | DirectedGraph(_, edges) =>
+      List.fold_left(
+        (list, edge) =>
+          if (edge.vertecie_a == from) {
+            [edge.vertecie_b, ...list];
+          } else {
+            list;
+          },
+        [],
+        edges,
+      )
+    };}
 };
