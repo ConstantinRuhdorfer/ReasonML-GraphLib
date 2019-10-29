@@ -104,6 +104,7 @@ module Graph: Graph = {
             if(List.length(partWork) == 0) {
               list;
             } else {
+              List.iter(elem => Hashtbl.add(alreadyVisited, elem, elem), partWork);
               List.concat([partWork, list]);
             }
           },
@@ -126,8 +127,6 @@ module Graph: Graph = {
         let alreadyVisited = Hashtbl.create(hashTblSize)
         List.fold_left(
           (list: list(vertecies), vertex) => {
-            let flatList = List.flatten(list)
-            List.iter(elem => Hashtbl.add(alreadyVisited, elem, elem), flatList);
             let component = visitConnections(vertex, alreadyVisited, graph);
             if (List.length(component) == 0) {
               list;
