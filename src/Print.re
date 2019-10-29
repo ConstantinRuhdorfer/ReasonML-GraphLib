@@ -28,6 +28,7 @@ let rec print_vertecies = vertecies => {
     | [] => print_string("") 
     | [head, ...tail] => {
       print_int(head)
+      print_string(" ")
       print_vertecies(tail)
     }
   }
