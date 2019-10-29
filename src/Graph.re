@@ -1,6 +1,7 @@
 open Vertex;
 open Edge;
 open Print;
+open IntHashtbl;
 
 /**
  * A graph is either a module graph or empty...
@@ -18,8 +19,8 @@ module type Graph = {
   let addEdge: (edge, graph) => graph;
   let removeEdge: (edge, graph) => graph;
   let getNeighbors: (vertex, graph) => vertecies;
-  let visitConnections: (vertex, list(vertecies), graph) => vertecies;
-  let getConnectedComponents: graph => list(vertecies);
+  let visitConnections: (vertex, intHashtbl, graph) => vertecies;
+  let getConnectedComponents: (graph, int) => list(vertecies);
 };
 
 /**
@@ -92,26 +93,27 @@ module Graph: Graph = {
     };
   };
   let rec visitConnections = (vertex, alreadyVisited, graph) => {
-    let alreadyVisitedFlat = List.flatten(alreadyVisited)
-    if (!List.exists(elem => elem == vertex, alreadyVisitedFlat)) {
-      let neighbours = getNeighbors(vertex, graph)
-      List.fold_left(
-        (list, vertex) => {
-          let partWork = visitConnections(vertex, [list, ...alreadyVisited], graph);
-          if(List.length(partWork) == 0) {
-            list;
-          } else {
-            List.concat([partWork, list]);
-          }
-        },
-        [vertex],
-        neighbours
-      )
-    } else {
-      [];
+    switch (Hashtbl.find(alreadyVisited, vertex)) {
+      | vertex => [];
+      | exception Not_found => {
+        let neighbours = getNeighbors(vertex, graph)
+        List.fold_left(
+          (list: vertecies, vertex: vertex) => {
+            List.iter(elem => Hashtbl.add(alreadyVisited, elem, elem), list);
+            let partWork = visitConnections(vertex, alreadyVisited, graph);
+            if(List.length(partWork) == 0) {
+              list;
+            } else {
+              List.concat([partWork, list]);
+            }
+          },
+          [vertex],
+          neighbours
+        )
+      };
     }
   };
-  let getConnectedComponents = graph => {
+  let getConnectedComponents = (graph, hashTblSize: int) => {
     switch (graph) {
       | Empty => []
       | Graph(vertecies, []) => 
@@ -121,9 +123,12 @@ module Graph: Graph = {
           vertecies,
         );
       | Graph(vertecies, edges) => {
+        let alreadyVisited = Hashtbl.create(hashTblSize)
         List.fold_left(
-          (list, vertex) => {
-            let component = visitConnections(vertex, list, graph)
+          (list: list(vertecies), vertex) => {
+            let flatList = List.flatten(list)
+            List.iter(elem => Hashtbl.add(alreadyVisited, elem, elem), flatList);
+            let component = visitConnections(vertex, alreadyVisited, graph);
             if (List.length(component) == 0) {
               list;
             } else {

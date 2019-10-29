@@ -50,7 +50,7 @@ let input_vertecies: list(int) = parse_input_vertecies(num_vertecies, [])
 let input_edges = parse_input_edges(inS, [])
 
 let aGraph = Graph(input_vertecies, input_edges);
-let connected = Graph.getConnectedComponents(aGraph)
+let connected = Graph.getConnectedComponents(aGraph, num_vertecies)
 
 print_newline()
 print_string("Result.")
