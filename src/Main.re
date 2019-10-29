@@ -12,7 +12,7 @@ open Graph
  * 
  * And performs calculations on the resulting graph.
  */
-let file_in_channel = open_in("input/graph8.plain");
+let file_in_channel = open_in("input/graph6.plain");
 
 let file_stream =
   Stream.from(_i =>

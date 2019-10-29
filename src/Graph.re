@@ -96,10 +96,10 @@ module Graph: Graph = {
     switch (Hashtbl.find(alreadyVisited, vertex)) {
       | vertex => [];
       | exception Not_found => {
-        let neighbours = getNeighbors(vertex, graph)
+        let neighbours = getNeighbors(vertex, graph);
+        Hashtbl.add(alreadyVisited, vertex, vertex);
         List.fold_left(
           (list: vertecies, vertex: vertex) => {
-            List.iter(elem => Hashtbl.add(alreadyVisited, elem, elem), list);
             let partWork = visitConnections(vertex, alreadyVisited, graph);
             if(List.length(partWork) == 0) {
               list;
